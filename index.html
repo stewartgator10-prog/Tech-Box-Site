@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Tech Box — Digital Tools for the Working Man</title>
 <meta name="description" content="Custom digital tools that save small businesses time, cut out busywork, and show you what's actually working. Built for people who work hard, not tech people.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -428,7 +429,7 @@ nav {
 }
 .tools-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 3px;
   background: var(--iron);
 }
@@ -955,6 +956,30 @@ footer {
           <div class="tool-card-result">
             <span class="tool-card-result-icon">💰</span>
             <div class="tool-card-result-text"><strong>The result:</strong> Stop spending money on neighborhoods that don't convert. Double down on the ones that do.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLEET MAINTENANCE TRACKER -->
+      <div class="tool-card">
+        <div class="tool-card-banner">
+          <span class="tool-card-banner-label">🚛 Fleet & Maintenance</span>
+        </div>
+        <div class="tool-preview">
+          <div class="tp-head">▸ Fleet Maintenance — Live View</div>
+          <div class="tp-row"><span>Truck 04 — Oil Change</span><span class="tp-best">DUE NOW ⚠</span></div>
+          <div class="tp-row tp-detail"><span>12,450 mi · 380 mi over interval</span><span></span></div>
+          <div class="tp-row"><span>Truck 02 — Brake Inspection</span><span></span></div>
+          <div class="tp-row tp-detail"><span>2,100 mi remaining</span><span></span></div>
+          <div class="tp-row"><span>Trailer 1 — DOT Inspection</span><span></span></div>
+          <div class="tp-row tp-detail"><span>14 days remaining</span><span></span></div>
+        </div>
+        <div class="tool-card-body">
+          <div class="tool-card-title">Fleet Maintenance Tracker</div>
+          <p class="tool-card-desc">Owners lose track of oil changes, inspections, and registration renewals across a growing fleet — until a truck breaks down mid-job. This tool watches mileage and time-based service intervals for every vehicle and piece of equipment, then flags what's due or overdue before it costs you a day of downtime.</p>
+          <div class="tool-card-result">
+            <span class="tool-card-result-icon">⚡</span>
+            <div class="tool-card-result-text"><strong>The result:</strong> Catch maintenance before it becomes a breakdown — keep every truck on the road and out of the shop.</div>
           </div>
         </div>
       </div>
