@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tech Box — Digital Tools for the Working Man</title>
+<meta name="description" content="Custom digital tools that save small businesses time, cut out busywork, and show you what's actually working. Built for people who work hard, not tech people.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── TOKENS ── */
+:root {
+  --coal:    #1C1A18;
+  --steel:   #2A2724;
+  --iron:    #3A3632;
+  --rust:    #4A4540;
+  --amber:   #C8922A;
+  --amber2:  #E8A830;
+  --cream:   #F2EDE6;
+  --smoke:   #B0A89E;
+  --chalk:   #D4CCC4;
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+
+  --max: 1100px;
+  --rule: 3px solid var(--amber);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--coal);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+/* ── UTILITY TYPE ── */
+.label-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border-left: 3px solid var(--amber);
+  padding-left: 10px;
+  margin-bottom: 18px;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 20px;
+}
+.section-heading .hl { color: var(--amber); }
+
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--smoke);
+  max-width: 540px;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--coal);
+  border-bottom: var(--rule);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-decoration: none;
+}
+.nav-logo-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1;
+}
+.nav-logo-tag {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  line-height: 1;
+  margin-top: 3px;
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--coal);
+  background: var(--amber);
+  padding: 9px 22px;
+  text-decoration: none;
+  transition: background .15s;
+}
+.nav-cta:hover { background: var(--amber2); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0 70px;
+  border-bottom: var(--rule);
+}
+
+/* noise texture overlay */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .04;
+  pointer-events: none;
+}
+
+/* diagonal stripe accent top-right */
+#hero::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 340px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 18px,
+    rgba(200,146,42,.04) 18px,
+    rgba(200,146,42,.04) 20px
+  );
+  pointer-events: none;
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 32px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.hero-status-dot {
+  width: 8px; height: 8px;
+  background: var(--amber);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.4; transform:scale(.7); }
+}
+
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 11vw, 9rem);
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 28px;
+  max-width: 880px;
+}
+.hero-h1 .line-amber {
+  color: var(--amber);
+  display: block;
+}
+/* thick rule under the amber word — the signature element */
+.hero-h1 .line-amber::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 6px;
+  background: var(--amber);
+  margin-top: 6px;
+  max-width: 480px;
+}
+
+.hero-body {
+  font-size: 1.15rem;
+  color: var(--smoke);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 40px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--coal);
+  background: var(--amber);
+  padding: 15px 32px;
+  text-decoration: none;
+  transition: background .15s, transform .1s;
+}
+.btn-primary:hover { background: var(--amber2); transform: translateY(-1px); }
+
+.btn-outline {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--chalk);
+  background: transparent;
+  border: 2px solid var(--iron);
+  padding: 13px 32px;
+  text-decoration: none;
+  transition: border-color .15s, color .15s;
+}
+.btn-outline:hover { border-color: var(--amber); color: var(--amber); }
+
+/* hero tally strip */
+.hero-tally {
+  display: flex;
+  gap: 0;
+  margin-top: 72px;
+  border-top: 1px solid var(--iron);
+}
+.tally-item {
+  flex: 1;
+  padding: 24px 28px 20px;
+  border-right: 1px solid var(--iron);
+}
+.tally-item:last-child { border-right: none; }
+.tally-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--cream);
+  line-height: 1;
+}
+.tally-num .tally-accent { color: var(--amber); }
+.tally-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  margin-top: 6px;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.how-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 52px;
+}
+.how-steps { display: flex; flex-direction: column; }
+.how-step {
+  display: flex;
+  gap: 20px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.how-step:last-child { border: none; padding-bottom: 0; }
+.step-num-box {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--iron);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 48px;
+  padding-top: 2px;
+}
+.step-icon-lbl {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: block;
+}
+.step-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.step-body {
+  font-size: .95rem;
+  color: var(--smoke);
+  line-height: 1.65;
+}
+
+/* big right-side callout */
+.how-callout {
+  background: var(--steel);
+  border-left: var(--rule);
+  padding: 44px 40px;
+  position: sticky;
+  top: 84px;
+}
+.how-callout-hl {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.0;
+  color: var(--cream);
+  margin-bottom: 20px;
+}
+.how-callout-hl span { color: var(--amber); }
+.how-callout-body {
+  font-size: 1rem;
+  color: var(--smoke);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.how-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+}
+.how-checklist li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--iron);
+  font-size: .95rem;
+  color: var(--chalk);
+  line-height: 1.5;
+}
+.how-checklist li:last-child { border: none; padding-bottom: 0; }
+.chk {
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── OUR WORK ── */
+#tools {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.tools-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 52px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--iron);
+}
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  background: var(--iron);
+}
+.tool-card {
+  background: var(--steel);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tool-card-banner {
+  background: var(--iron);
+  border-bottom: var(--rule);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tool-card-banner-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.tool-card-body { padding: 32px 28px 36px; flex: 1; display: flex; flex-direction: column; }
+.tool-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--cream);
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+.tool-card-desc {
+  font-size: .97rem;
+  color: var(--smoke);
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 24px;
+}
+.tool-card-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--coal);
+  padding: 16px 18px;
+  border-left: 3px solid var(--amber);
+}
+.tool-card-result-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.tool-card-result-text { font-size: .9rem; color: var(--chalk); line-height: 1.5; }
+.tool-card-result-text strong { color: var(--amber); }
+
+/* mini mockup strip at top of card */
+.tool-preview {
+  border-bottom: 1px solid var(--iron);
+  padding: 20px 28px;
+  background: var(--coal);
+  font-family: var(--font-display);
+  font-size: 10px;
+}
+.tp-head {
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: var(--amber);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.tp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--iron);
+  color: var(--smoke);
+}
+.tp-row:last-child { border: none; }
+.tp-best { color: var(--amber); font-weight: 900; }
+.tp-detail { font-size: 9px; color: var(--rust); }
+
+.tp-bar-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+.tp-bar-lbl { color: var(--smoke); width: 56px; font-size: 9px; }
+.tp-bar-track { flex: 1; height: 5px; background: var(--iron); }
+.tp-bar-fill { height: 100%; background: var(--amber); }
+.tp-bar-val { color: var(--chalk); font-size: 9px; width: 32px; text-align: right; }
+
+/* ── WHAT WE DO ── */
+#capabilities {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.cap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3px;
+  background: var(--iron);
+  margin-top: 52px;
+}
+.cap-cell {
+  background: var(--steel);
+  padding: 32px 28px;
+  transition: background .15s;
+}
+.cap-cell:hover { background: var(--iron); }
+.cap-cell-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 14px;
+}
+.cap-cell-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--cream);
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+.cap-cell-body {
+  font-size: .92rem;
+  color: var(--smoke);
+  line-height: 1.65;
+}
+
+/* ── WHO WE HELP ── */
+#industries {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.ind-strip {
+  display: flex;
+  gap: 0;
+  margin-top: 48px;
+  background: var(--iron);
+  flex-wrap: wrap;
+}
+.ind-tile {
+  flex: 1;
+  min-width: 160px;
+  background: var(--steel);
+  padding: 28px 22px;
+  border-right: 1px solid var(--iron);
+  transition: background .15s;
+}
+.ind-tile:last-child { border-right: none; }
+.ind-tile:hover { background: var(--iron); }
+.ind-icon { font-size: 1.6rem; display: block; margin-bottom: 12px; }
+.ind-name {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--cream);
+  margin-bottom: 7px;
+}
+.ind-body { font-size: .83rem; color: var(--smoke); line-height: 1.55; }
+
+/* ── CONTACT ── */
+#contact {
+  padding: 100px 0 120px;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 52px;
+}
+.contact-promise {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+}
+.promise-row {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--iron);
+}
+.promise-row:last-child { border: none; }
+.prom-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 32px;
+}
+.prom-title {
+  font-family: var(--font-display);
+  font-size: .9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+.prom-body { font-size: .88rem; color: var(--smoke); line-height: 1.6; }
+
+/* form */
+.contact-form {
+  background: var(--steel);
+  border-top: var(--rule);
+  padding: 36px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field.full { grid-column: 1 / -1; }
+label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: var(--smoke);
+  text-transform: uppercase;
+}
+input, textarea, select {
+  background: var(--coal);
+  border: 1px solid var(--iron);
+  border-radius: 0;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: .95rem;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+  appearance: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--amber); }
+input::placeholder, textarea::placeholder { color: var(--rust); }
+textarea { resize: vertical; min-height: 110px; }
+
+.form-submit {
+  margin-top: 20px;
+  width: 100%;
+  display: block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--coal);
+  background: var(--amber);
+  padding: 16px 24px;
+  border: none;
+  cursor: pointer;
+  transition: background .15s;
+}
+.form-submit:hover { background: var(--amber2); }
+
+.form-note {
+  font-size: .8rem;
+  color: var(--smoke);
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+#form-status {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-align: center;
+  min-height: 18px;
+}
+#form-status.success { color: #6fcf97; }
+#form-status.error   { color: #eb5757; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--steel);
+  border-top: var(--rule);
+  padding: 36px 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-brand-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.footer-brand-tag {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 3px;
+}
+.footer-copy { font-size: .8rem; color: var(--smoke); }
+.footer-links { display: flex; gap: 28px; list-style: none; }
+.footer-links a {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  text-decoration: none;
+  transition: color .15s;
+}
+.footer-links a:hover { color: var(--amber); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .nav-links { display: none; }
+  .how-layout { grid-template-columns: 1fr; }
+  .how-callout { position: static; }
+  .tools-intro { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .cap-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-tally { flex-wrap: wrap; }
+  .tally-item { min-width: 50%; }
+  .ind-strip { flex-wrap: wrap; }
+  .ind-tile { min-width: 50%; }
+}
+@media (max-width: 500px) {
+  .cap-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-name">The Tech Box</div>
+      <div class="nav-logo-tag">Digital Tools for the Working Man</div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#tools">Our Work</a></li>
+      <li><a href="#capabilities">What We Do</a></li>
+      <li><a href="#industries">Who We Help</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Free Consult →</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="wrap hero-content">
+    <div class="hero-status">
+      <span class="hero-status-dot"></span>
+      Now taking on new clients
+    </div>
+
+    <h1 class="hero-h1">
+      Tools built for
+      <span class="line-amber">The Working Man.</span>
+    </h1>
+
+    <p class="hero-body">
+      We build custom digital tools that save your crew time, cut the busywork, 
+      and show you what's actually making your business money. No tech knowledge 
+      needed — just tell us what's slowing you down.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#tools" class="btn-primary">See Our Work ↓</a>
+      <a href="#contact" class="btn-outline">Get a Free Consultation</a>
+    </div>
+
+    <div class="hero-tally">
+      <div class="tally-item">
+        <div class="tally-num">100<span class="tally-accent">%</span></div>
+        <div class="tally-label">Built for Your Business</div>
+      </div>
+      <div class="tally-item">
+        <div class="tally-num">24<span class="tally-accent">hr</span></div>
+        <div class="tally-label">Guaranteed Response</div>
+      </div>
+      <div class="tally-item">
+        <div class="tally-num">0</div>
+        <div class="tally-label">Tech Knowledge Required From You</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="wrap">
+    <div class="label-tag">How It Works</div>
+    <h2 class="section-heading">We handle the tech.<br><span class="hl">You run your business.</span></h2>
+
+    <div class="how-layout">
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num-box">01</div>
+          <div>
+            <span class="step-icon-lbl">☕</span>
+            <div class="step-title">Tell us what's slowing you down</div>
+            <p class="step-body">No tech talk required. Just explain what's eating your time or costing you money — we listen and ask the right questions to understand your operation.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="step-num-box">02</div>
+          <div>
+            <span class="step-icon-lbl">🔨</span>
+            <div class="step-title">We build it with you, fast</div>
+            <p class="step-body">You see exactly what we're building in plain English before we start, then we get to work. You see real progress early and often, not just at the end — if something needs adjusting, we fix it on the spot.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="step-num-box">03</div>
+          <div>
+            <span class="step-icon-lbl">📈</span>
+            <div class="step-title">As your business evolves, so does the solution</div>
+            <p class="step-body">Your crew is up and running same day with a simple handoff anyone can follow. As your business grows and changes, we keep building alongside you — your tools never get stuck standing still.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-callout">
+        <div class="how-callout-hl">Why small businesses<br><span>choose us</span></div>
+        <p class="how-callout-body">We've worked with field crews and owner-operators who don't have time for software that takes a week to figure out. Everything we build is designed so your people can use it from day one.</p>
+        <ul class="how-checklist">
+          <li><span class="chk">✓</span> Built around your workflow, not a generic template</li>
+          <li><span class="chk">✓</span> Live and running in 2–6 weeks, not months</li>
+          <li><span class="chk">✓</span> Works on a phone, in a truck, in the field</li>
+          <li><span class="chk">✓</span> Your data stays yours — never shared, never sold</li>
+          <li><span class="chk">✓</span> We stay available long after launch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OUR WORK ── -->
+<section id="tools">
+  <div class="wrap">
+    <div class="tools-intro">
+      <div>
+        <div class="label-tag">Our Work</div>
+        <h2 class="section-heading">Real tools.<br><span class="hl">Real crews.</span></h2>
+      </div>
+      <p class="section-sub">Every tool below is live and being used by a real small business right now — not a demo, not a mockup.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- CHIP DROP -->
+      <div class="tool-card">
+        <div class="tool-card-banner">
+          <span class="tool-card-banner-label">🌳 Tree & Landscaping</span>
+        </div>
+        <div class="tool-preview">
+          <div class="tp-head">▸ Chip Drop Dispatch — Live View</div>
+          <div class="tp-row"><span>Green Valley Nursery</span><span class="tp-best">BEST PICK ↑</span></div>
+          <div class="tp-row tp-detail"><span>1.2 mi detour · +8 min drive</span><span>$4.20 total cost</span></div>
+          <div class="tp-row"><span>Riverside Park</span><span></span></div>
+          <div class="tp-row tp-detail"><span>3.8 mi detour · +22 min drive</span><span>$9.60 total cost</span></div>
+          <div class="tp-row"><span>Meadow Farm</span><span></span></div>
+          <div class="tp-row tp-detail"><span>5.1 mi detour · +30 min drive</span><span>$12.40 total cost</span></div>
+        </div>
+        <div class="tool-card-body">
+          <div class="tool-card-title">Chip Drop Dispatch</div>
+          <p class="tool-card-desc">Tree crews used to guess where to dump wood chips mid-job — burning time and fuel on the fly. This tool shows every nearby drop site, ranks them by cheapest and closest, and lets your crew send a heads-up text to the site owner in one tap. The whole decision takes seconds instead of minutes, every job, every day.</p>
+          <div class="tool-card-result">
+            <span class="tool-card-result-icon">⚡</span>
+            <div class="tool-card-result-text"><strong>The result:</strong> Crews make the right dump decision in under 30 seconds — and stop eating into job profit on unnecessary detours.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDDM TRACKER -->
+      <div class="tool-card">
+        <div class="tool-card-banner">
+          <span class="tool-card-banner-label">📬 Direct Mail Advertising</span>
+        </div>
+        <div class="tool-preview">
+          <div class="tp-head">▸ EDDM Campaign Analytics</div>
+          <div class="tp-bar-row">
+            <span class="tp-bar-lbl">C012 Route</span>
+            <div class="tp-bar-track"><div class="tp-bar-fill" style="width:82%"></div></div>
+            <span class="tp-bar-val">18 leads</span>
+          </div>
+          <div class="tp-bar-row">
+            <span class="tp-bar-lbl">C008 Route</span>
+            <div class="tp-bar-track"><div class="tp-bar-fill" style="width:55%"></div></div>
+            <span class="tp-bar-val">12 leads</span>
+          </div>
+          <div class="tp-bar-row">
+            <span class="tp-bar-lbl">B003 Route</span>
+            <div class="tp-bar-track"><div class="tp-bar-fill" style="width:35%"></div></div>
+            <span class="tp-bar-val">7 leads</span>
+          </div>
+          <div class="tp-bar-row">
+            <span class="tp-bar-lbl">R019 Route</span>
+            <div class="tp-bar-track"><div class="tp-bar-fill" style="width:20%"></div></div>
+            <span class="tp-bar-val">4 leads</span>
+          </div>
+        </div>
+        <div class="tool-card-body">
+          <div class="tool-card-title">EDDM Ad Tracker</div>
+          <p class="tool-card-desc">Most businesses mail flyers and have no idea which neighborhoods actually called. This tracker connects every single lead back to the exact mail route it came from — automatically. No manual entry. You see a clear map and dashboard showing where your money is working and where it isn't, so you mail smarter every time.</p>
+          <div class="tool-card-result">
+            <span class="tool-card-result-icon">💰</span>
+            <div class="tool-card-result-text"><strong>The result:</strong> Stop spending money on neighborhoods that don't convert. Double down on the ones that do.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT WE DO ── -->
+<section id="capabilities">
+  <div class="wrap">
+    <div class="label-tag">What We Do</div>
+    <h2 class="section-heading">We turn your biggest<br><span class="hl">headaches into habits.</span></h2>
+    <p class="section-sub">The problems that eat up your time every week — we make those run automatically so you don't have to think about them anymore.</p>
+
+    <div class="cap-grid">
+      <div class="cap-cell">
+        <span class="cap-cell-icon">⏱️</span>
+        <div class="cap-cell-title">Stop losing hours to busywork</div>
+        <p class="cap-cell-body">Manual entry, spreadsheet copy-paste, re-entering the same info twice — we automate all of it so your team spends time on actual work.</p>
+      </div>
+      <div class="cap-cell">
+        <span class="cap-cell-icon">📍</span>
+        <div class="cap-cell-title">Know where your crew should go</div>
+        <p class="cap-cell-body">Live maps and routing tools help your people in the field make the right call fast — without calling the office or pulling up Google Maps.</p>
+      </div>
+      <div class="cap-cell">
+        <span class="cap-cell-icon">💰</span>
+        <div class="cap-cell-title">See where your money's going</div>
+        <p class="cap-cell-body">Ad spend, job costs, which neighborhoods convert — clear dashboards so you stop guessing and start putting money where it works.</p>
+      </div>
+      <div class="cap-cell">
+        <span class="cap-cell-icon">📲</span>
+        <div class="cap-cell-title">Tools your crew can actually use</div>
+        <p class="cap-cell-body">Works on a phone, in the field, in gloves. Simple screens, clear answers. If your crew can use a smartphone, they can use our tools.</p>
+      </div>
+      <div class="cap-cell">
+        <span class="cap-cell-icon">🔗</span>
+        <div class="cap-cell-title">Connect the tools you already use</div>
+        <p class="cap-cell-body">Your job management software, your existing lists, your CRM — we pull it all together so you're not jumping between five different apps.</p>
+      </div>
+      <div class="cap-cell">
+        <span class="cap-cell-icon">🔒</span>
+        <div class="cap-cell-title">Your customer data stays yours</div>
+        <p class="cap-cell-body">Everything is locked down and secure. Your customers' information is never shared or sold. What you build with us belongs to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHO WE HELP ── -->
+<section id="industries">
+  <div class="wrap">
+    <div class="label-tag">Who We Help</div>
+    <h2 class="section-heading">Built for small businesses<br><span class="hl">with Big Goals.</span></h2>
+    <p class="section-sub">If you've got a crew, a service area, and more manual work than you'd like — we can help.</p>
+
+    <div class="ind-strip">
+      <div class="ind-tile">
+        <span class="ind-icon">🌳</span>
+        <div class="ind-name">Tree & Landscaping</div>
+        <p class="ind-body">Dispatch tools, chip drop routing, and direct mail tracking. Our deepest work is here.</p>
+      </div>
+      <div class="ind-tile">
+        <span class="ind-icon">🏠</span>
+        <div class="ind-name">Home Services</div>
+        <p class="ind-body">HVAC, cleaning, pest control, plumbing — any crew-based business that books jobs and tracks leads.</p>
+      </div>
+      <div class="ind-tile">
+        <span class="ind-icon">🚛</span>
+        <div class="ind-name">Hauling & Delivery</div>
+        <p class="ind-body">Multi-stop routing and cost-per-job tracking built for people behind the wheel, not behind a desk.</p>
+      </div>
+      <div class="ind-tile">
+        <span class="ind-icon">📮</span>
+        <div class="ind-name">Local Advertising</div>
+        <p class="ind-body">Know which neighborhoods are worth mailing to. Track every lead. Stop spending on what doesn't convert.</p>
+      </div>
+      <div class="ind-tile">
+        <span class="ind-icon">🏗️</span>
+        <div class="ind-name">Construction & Trades</div>
+        <p class="ind-body">Job tracking, lead management, and profit dashboards — without the spreadsheet headache.</p>
+      </div>
+      <div class="ind-tile">
+        <span class="ind-icon">🤔</span>
+        <div class="ind-name">Something Else?</div>
+        <p class="ind-body">If it costs you hours every week, there's probably a tool for it. Reach out — we'll tell you honestly if we can help.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="wrap">
+    <div class="label-tag">Get In Touch</div>
+    <h2 class="section-heading">Tell us what's<br><span class="hl">slowing you down.</span></h2>
+
+    <div class="contact-grid">
+      <div>
+        <p class="section-sub">No tech talk required. Just describe the problem in plain words and we'll tell you what's possible — no obligation.</p>
+
+        <div class="contact-promise">
+          <div class="promise-row">
+            <span class="prom-icon">⚡</span>
+            <div>
+              <div class="prom-title">Hear back within 24 hours</div>
+              <p class="prom-body">We respond fast. Most projects go from first conversation to a working tool in 2–6 weeks.</p>
+            </div>
+          </div>
+          <div class="promise-row">
+            <span class="prom-icon">🔒</span>
+            <div>
+              <div class="prom-title">What's yours stays yours</div>
+              <p class="prom-body">Your business data and customer information belong to you — full stop. Never shared, never sold.</p>
+            </div>
+          </div>
+          <div class="promise-row">
+            <span class="prom-icon">🤝</span>
+            <div>
+              <div class="prom-title">Your crew will get it on day one</div>
+              <p class="prom-body">We make sure your team can actually use what we built. No IT department needed.</p>
+            </div>
+          </div>
+          <div class="promise-row">
+            <span class="prom-icon">🛡️</span>
+            <div>
+              <div class="prom-title">No pressure, no runaround</div>
+              <p class="prom-body">Tell us the problem, we'll tell you if we can help and what it would roughly cost. That's it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="f-name">Your Name</label>
+            <input id="f-name" type="text" placeholder="Jane Smith" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-biz">Business Name</label>
+            <input id="f-biz" type="text" placeholder="Smith Tree Service">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" type="email" placeholder="jane@yourbusiness.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="f-phone">Phone (Optional)</label>
+            <input id="f-phone" type="tel" placeholder="(412) 555-0100" autocomplete="tel">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field full">
+            <label for="f-industry">Your Industry</label>
+            <select id="f-industry">
+              <option value="" disabled selected>Select your industry…</option>
+              <option>Tree care / Arborist</option>
+              <option>Landscaping / Lawn care</option>
+              <option>HVAC / Plumbing / Electrical</option>
+              <option>Cleaning services</option>
+              <option>Construction / Trades</option>
+              <option>Logistics / Hauling</option>
+              <option>Local marketing / Direct mail</option>
+              <option>Other home services</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field full">
+            <label for="f-problem">What's slowing you down?</label>
+            <textarea id="f-problem" placeholder="Example: My crew wastes time figuring out where to dump chips. Or: I mail flyers every month but have no idea if they're working…"></textarea>
+          </div>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send It →</button>
+        <div id="form-status"></div>
+        <p class="form-note">Your information is only used to respond to your inquiry. No spam, no list adds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <div class="footer-brand-name">The Tech Box</div>
+      <div class="footer-brand-tag">Digital Tools for the Working Man</div>
+    </div>
+    <span class="footer-copy">© 2026 The Tech Box. All rights reserved.</span>
+    <ul class="footer-links">
+      <li><a href="#tools">Our Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+// ── CONTACT FORM ──────────────────────────────────────────────
+function submitForm() {
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const biz     = document.getElementById('f-biz').value.trim();
+  const industry= document.getElementById('f-industry').value;
+  const problem = document.getElementById('f-problem').value.trim();
+  const status  = document.getElementById('form-status');
+
+  if (!name)    { flash(status, 'error', 'Please enter your name.'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    flash(status, 'error', 'Please enter a valid email address.'); return;
+  }
+  if (!problem) { flash(status, 'error', 'Please describe what you need help with.'); return; }
+
+  const btn = document.querySelector('.form-submit');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  status.className = '';
+  status.textContent = '';
+
+  // Replace YOUR_FORMSPREE_ID with your actual Formspree form ID
+  // e.g. https://formspree.io/f/xdoqgpze
+  const ENDPOINT = 'https://formspree.io/f/xojonvjy';
+
+  fetch(ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ name, email, business: biz, industry, problem }),
+  })
+  .then(r => {
+    if (r.ok) {
+      flash(status, 'success', '✓ Got it — we\'ll be in touch within 24 hours.');
+      clearForm();
+    } else {
+      r.json().then(d => flash(status, 'error', d?.errors?.[0]?.message || 'Something went wrong. Please try again.'));
+    }
+  })
+  .catch(() => flash(status, 'error', 'Network error. Please try again.'))
+  .finally(() => { btn.disabled = false; btn.textContent = 'Send It →'; });
+}
+
+function flash(el, type, msg) { el.className = type; el.textContent = msg; }
+
+function clearForm() {
+  ['f-name','f-biz','f-email','f-phone','f-problem'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-industry').selectedIndex = 0;
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.how-step, .tool-card, .cap-cell, .ind-tile, .promise-row').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(12px)';
+  el.style.transition = 'opacity .45s ease, transform .45s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
