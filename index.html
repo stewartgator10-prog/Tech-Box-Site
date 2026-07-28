@@ -1454,6 +1454,14 @@ function submitForm() {
     if (r.ok) {
       flash(status, 'success', '✓ Got it — we\'ll be in touch within 24 hours.');
       clearForm();
+      // Google Ads: count a "Submit lead form" conversion on real success only
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18356164135/FmarCIuVitgcEKes87BE',
+          'value': 1.0,
+          'currency': 'USD'
+        });
+      }
     } else {
       const d = await r.json().catch(() => ({}));
       flash(status, 'error', d?.error || 'Something went wrong. Please try again or email us directly.');
