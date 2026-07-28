@@ -1,0 +1,13 @@
+{
+  "name": "tech-box-solutions-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site + Supabase-backed CRM for Tech Box Solutions.",
+  "scripts": {
+    "dev": "netlify dev",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}

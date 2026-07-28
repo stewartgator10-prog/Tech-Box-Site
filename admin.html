@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CRM — Tech Box Solutions</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --coal:#1C1A18; --steel:#2A2724; --iron:#3A3632; --rust:#4A4540;
+  --amber:#C8922A; --amber2:#E8A830; --cream:#F2EDE6; --smoke:#B0A89E; --chalk:#D4CCC4;
+  --green:#6fcf97; --red:#eb5757; --blue:#5b9bd5;
+  --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--coal);color:var(--chalk);font-family:var(--fb);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fd);text-transform:uppercase;color:var(--cream);letter-spacing:.03em}
+button{font-family:var(--fd);cursor:pointer}
+a{color:var(--amber)}
+
+/* ── LOGIN ── */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--steel);border-top:3px solid var(--amber);padding:40px;width:100%;max-width:400px}
+.login-card h1{font-size:1.8rem;font-weight:900;margin-bottom:6px}
+.login-card .sub{color:var(--smoke);font-size:.9rem;margin-bottom:28px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+label{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke)}
+input,textarea,select{background:var(--coal);border:1px solid var(--iron);color:var(--cream);font-family:var(--fb);font-size:.95rem;padding:11px 13px;outline:none;width:100%;border-radius:0;appearance:none}
+input:focus,textarea:focus,select:focus{border-color:var(--amber)}
+textarea{resize:vertical;min-height:70px}
+.btn{background:var(--amber);color:var(--coal);border:none;font-weight:800;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:13px 20px;width:100%;transition:background .15s}
+.btn:hover{background:var(--amber2)}
+.btn-sm{width:auto;padding:8px 16px;font-size:12px}
+.btn-ghost{background:transparent;border:1px solid var(--iron);color:var(--chalk)}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+.msg{margin-top:14px;font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.05em;text-align:center;min-height:16px}
+.msg.error{color:var(--red)} .msg.success{color:var(--green)}
+
+/* ── APP ── */
+#app{display:none}
+.topbar{position:sticky;top:0;z-index:20;background:var(--coal);border-bottom:3px solid var(--amber);display:flex;align-items:center;justify-content:space-between;padding:14px 24px;flex-wrap:wrap;gap:12px}
+.brand{font-family:var(--fd);font-weight:900;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.brand small{display:block;font-size:10px;letter-spacing:.2em;color:var(--amber);font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--smoke)}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:var(--iron);margin-bottom:28px}
+.stat{background:var(--steel);padding:20px 22px}
+.stat-num{font-family:var(--fd);font-size:2.4rem;font-weight:900;color:var(--cream);line-height:1}
+.stat-num.amber{color:var(--amber)}
+.stat-label{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-top:6px}
+
+/* tabs */
+.tabs{display:flex;gap:2px;background:var(--iron);margin-bottom:20px;flex-wrap:wrap}
+.tab{background:var(--steel);border:none;color:var(--smoke);padding:11px 20px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.tab.active{background:var(--amber);color:var(--coal)}
+.tab .count{opacity:.7;margin-left:6px}
+
+/* contact rows */
+.list{display:flex;flex-direction:column;gap:3px;background:var(--iron)}
+.row{background:var(--steel)}
+.row-head{display:grid;grid-template-columns:1.4fr 1.4fr 1fr auto;gap:16px;align-items:center;padding:16px 20px;cursor:pointer}
+.row-head:hover{background:var(--iron)}
+.rh-name{font-family:var(--fd);font-weight:800;font-size:1.05rem;color:var(--cream);text-transform:uppercase;letter-spacing:.02em}
+.rh-sub{font-size:.82rem;color:var(--smoke)}
+.rh-meta{font-size:.82rem;color:var(--smoke)}
+.badge{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;white-space:nowrap}
+.badge.lead{background:rgba(91,155,213,.15);color:var(--blue)}
+.badge.qualified{background:rgba(232,168,48,.15);color:var(--amber)}
+.badge.customer{background:rgba(111,207,151,.15);color:var(--green)}
+.badge.lost{background:rgba(235,87,87,.12);color:var(--red)}
+.row-body{display:none;padding:0 20px 22px;border-top:1px solid var(--iron)}
+.row.open .row-body{display:block}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+.detail-block .dlabel{font-family:var(--fd);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke);margin-bottom:4px}
+.detail-block .dval{color:var(--chalk);font-size:.92rem;white-space:pre-wrap}
+.controls{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px}
+.controls .field{flex:1;min-width:150px;margin-bottom:0}
+.inline-note{margin-top:14px}
+
+/* projects */
+.proj-section{margin-top:20px;border-top:1px solid var(--iron);padding-top:16px}
+.proj-section h3{font-size:1rem;font-weight:800;margin-bottom:12px;color:var(--amber)}
+.proj{display:grid;grid-template-columns:1.5fr 1fr auto auto;gap:12px;align-items:center;background:var(--coal);padding:12px 14px;margin-bottom:6px}
+.proj-title{font-weight:600;color:var(--cream)}
+.proj-desc{font-size:.8rem;color:var(--smoke)}
+.pill{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px}
+.pill.open{background:rgba(91,155,213,.15);color:var(--blue)}
+.pill.in_progress{background:rgba(232,168,48,.15);color:var(--amber)}
+.pill.complete{background:rgba(111,207,151,.15);color:var(--green)}
+.pill.on_hold{background:rgba(176,168,158,.15);color:var(--smoke)}
+.pill.cancelled{background:rgba(235,87,87,.12);color:var(--red)}
+.add-proj{display:grid;grid-template-columns:1.4fr 1.6fr .8fr auto;gap:10px;align-items:end;margin-top:12px}
+.empty{color:var(--smoke);font-size:.9rem;padding:40px 20px;text-align:center}
+.setup-warn{background:rgba(235,87,87,.1);border:1px solid var(--red);color:var(--cream);padding:16px 20px;margin-bottom:20px;font-size:.9rem}
+.setup-warn code{color:var(--amber);font-family:monospace}
+@media(max-width:800px){
+  .stats{grid-template-columns:1fr 1fr}
+  .row-head{grid-template-columns:1fr auto}
+  .rh-meta{display:none}
+  .detail-grid{grid-template-columns:1fr}
+  .proj{grid-template-columns:1fr auto}
+  .add-proj{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login">
+  <div class="login-card">
+    <h1>Tech Box CRM</h1>
+    <p class="sub">Sign in to manage leads, customers &amp; projects.</p>
+    <div id="setup-warn-login"></div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" placeholder="you@techboxsolution.com">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <button class="btn" id="login-btn">Sign In →</button>
+    <div class="msg" id="login-msg"></div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand">Tech Box CRM<small>Leads · Customers · Projects</small></div>
+    <div class="topbar-right">
+      <span id="who"></span>
+      <button class="btn btn-sm btn-ghost" id="refresh-btn">Refresh</button>
+      <button class="btn btn-sm btn-ghost" id="logout-btn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="stat-num amber" id="s-leads">0</div><div class="stat-label">New Leads</div></div>
+      <div class="stat"><div class="stat-num" id="s-qualified">0</div><div class="stat-label">Qualified</div></div>
+      <div class="stat"><div class="stat-num" id="s-customers">0</div><div class="stat-label">Open Customers</div></div>
+      <div class="stat"><div class="stat-num" id="s-projects">0</div><div class="stat-label">Open Projects</div></div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-stage="all">All <span class="count" id="c-all">0</span></button>
+      <button class="tab" data-stage="lead">Leads <span class="count" id="c-lead">0</span></button>
+      <button class="tab" data-stage="qualified">Qualified <span class="count" id="c-qualified">0</span></button>
+      <button class="tab" data-stage="customer">Customers <span class="count" id="c-customer">0</span></button>
+      <button class="tab" data-stage="lost">Lost <span class="count" id="c-lost">0</span></button>
+    </div>
+
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty" style="display:none">No contacts in this view yet.</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+//  CONFIG — fill these in with your Supabase project's PUBLIC values.
+//  Both are safe to expose in the browser: the anon key only grants what your
+//  Row-Level Security policies allow (here: nothing until you're logged in).
+//  Find them in Supabase → Project Settings → API.
+// ════════════════════════════════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://osrdaywdwfbknibegohi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_m5j8hfAkRvvwmMYAydj-ow_-sT1gl7p';
+
+// ────────────────────────────────────────────────────────────────────────────
+const configured = !SUPABASE_URL.startsWith('__') && !SUPABASE_ANON_KEY.startsWith('__');
+let sb = null;
+if (configured) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = (id) => document.getElementById(id);
+let contacts = [];
+let projectsByContact = {};
+let activeStage = 'all';
+
+const STAGES  = ['lead','qualified','customer','lost'];
+const PSTATUS = ['open','in_progress','complete','on_hold','cancelled'];
+const esc = (s) => (s ?? '').toString().replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = (s) => new Date(s).toLocaleDateString('en-US',
+  {month:'short',day:'numeric',year:'numeric'});
+
+// ── SETUP GUARD ─────────────────────────────────────────────────────────────
+if (!configured) {
+  $('setup-warn-login').innerHTML =
+    '<div class="setup-warn">⚠ Not configured yet. Open <code>admin.html</code> and set ' +
+    '<code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> near the top of the script.</div>';
+  $('login-btn').disabled = true;
+}
+
+// ── AUTH ────────────────────────────────────────────────────────────────────
+$('login-btn').addEventListener('click', signIn);
+$('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+$('logout-btn').addEventListener('click', async () => { await sb.auth.signOut(); showLogin(); });
+$('refresh-btn').addEventListener('click', loadAll);
+
+async function signIn() {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  const msg = $('login-msg');
+  msg.className = 'msg'; msg.textContent = '';
+  if (!email || !password) { msg.className='msg error'; msg.textContent='Enter email and password.'; return; }
+  $('login-btn').disabled = true; $('login-btn').textContent = 'Signing in…';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  $('login-btn').disabled = false; $('login-btn').textContent = 'Sign In →';
+  if (error) { msg.className='msg error'; msg.textContent = error.message; return; }
+  showApp(data.user);
+}
+
+async function initSession() {
+  if (!configured) return;
+  const { data } = await sb.auth.getSession();
+  if (data.session) showApp(data.session.user); else showLogin();
+}
+
+function showLogin(){ $('app').style.display='none'; $('login').style.display='flex'; }
+function showApp(user){
+  $('login').style.display='none'; $('app').style.display='block';
+  $('who').textContent = user.email;
+  loadAll();
+}
+
+// ── DATA ────────────────────────────────────────────────────────────────────
+async function loadAll() {
+  const [{ data: c, error: ce }, { data: p, error: pe }] = await Promise.all([
+    sb.from('contacts').select('*').order('created_at', { ascending: false }),
+    sb.from('projects').select('*').order('created_at', { ascending: false }),
+  ]);
+  if (ce) { alert('Error loading contacts: ' + ce.message); return; }
+  if (pe) { console.error(pe); }
+  contacts = c || [];
+  projectsByContact = {};
+  (p || []).forEach(pr => {
+    (projectsByContact[pr.contact_id] = projectsByContact[pr.contact_id] || []).push(pr);
+  });
+  render();
+}
+
+function render() {
+  // stats
+  const by = (st) => contacts.filter(x => x.stage === st).length;
+  $('s-leads').textContent = by('lead');
+  $('s-qualified').textContent = by('qualified');
+  $('s-customers').textContent = by('customer');
+  const openProjects = Object.values(projectsByContact).flat()
+    .filter(p => p.status === 'open' || p.status === 'in_progress').length;
+  $('s-projects').textContent = openProjects;
+  $('c-all').textContent = contacts.length;
+  STAGES.forEach(s => $('c-'+s).textContent = by(s));
+
+  // list
+  const rows = contacts.filter(x => activeStage === 'all' || x.stage === activeStage);
+  $('empty').style.display = rows.length ? 'none' : 'block';
+  $('list').innerHTML = rows.map(renderRow).join('');
+  wireRows();
+}
+
+function renderRow(c) {
+  const projs = projectsByContact[c.id] || [];
+  return `
+  <div class="row" data-id="${c.id}">
+    <div class="row-head">
+      <div>
+        <div class="rh-name">${esc(c.name)}</div>
+        <div class="rh-sub">${esc(c.business || '—')}</div>
+      </div>
+      <div class="rh-sub">${esc(c.email)}<br>${esc(c.phone || '')}</div>
+      <div class="rh-meta">${esc(c.industry || '')}<br>${fmtDate(c.created_at)}</div>
+      <span class="badge ${c.stage}">${c.stage}</span>
+    </div>
+    <div class="row-body">
+      <div class="detail-grid">
+        <div class="detail-block">
+          <div class="dlabel">What they need</div>
+          <div class="dval">${esc(c.industry || '—')}</div>
+        </div>
+        <div class="detail-block">
+          <div class="dlabel">Received</div>
+          <div class="dval">${fmtDate(c.created_at)} · via ${esc(c.source || 'website')}</div>
+        </div>
+        <div class="detail-block" style="grid-column:1/-1">
+          <div class="dlabel">Message</div>
+          <div class="dval">${esc(c.message || '—')}</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <label>Stage</label>
+          <select class="js-stage">
+            ${STAGES.map(s => `<option value="${s}" ${s===c.stage?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <a class="btn btn-sm btn-ghost" href="mailto:${esc(c.email)}" style="text-decoration:none;text-align:center">Email</a>
+      </div>
+
+      <div class="field inline-note">
+        <label>Private notes</label>
+        <textarea class="js-notes" placeholder="Your working notes on this contact…">${esc(c.notes || '')}</textarea>
+        <button class="btn btn-sm js-save-note" style="margin-top:8px;width:auto">Save Notes</button>
+      </div>
+
+      <div class="proj-section">
+        <h3>Projects (${projs.length})</h3>
+        ${projs.map(renderProj).join('') || '<div class="rh-sub" style="margin-bottom:10px">No projects yet.</div>'}
+        <div class="add-proj">
+          <input class="js-p-title" placeholder="Project title">
+          <input class="js-p-desc" placeholder="Short description (optional)">
+          <input class="js-p-value" type="number" placeholder="$ value" step="0.01">
+          <button class="btn btn-sm js-add-proj">Add Project</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderProj(p) {
+  return `
+  <div class="proj" data-pid="${p.id}">
+    <div>
+      <div class="proj-title">${esc(p.title)}</div>
+      <div class="proj-desc">${esc(p.description || '')}</div>
+    </div>
+    <select class="js-p-status">
+      ${PSTATUS.map(s => `<option value="${s}" ${s===p.status?'selected':''}>${s.replace('_',' ')}</option>`).join('')}
+    </select>
+    <span class="proj-desc">${p.value != null ? '$'+Number(p.value).toLocaleString() : ''}</span>
+    <button class="btn btn-sm btn-ghost js-del-proj">✕</button>
+  </div>`;
+}
+
+// ── ROW INTERACTIONS ────────────────────────────────────────────────────────
+function wireRows() {
+  document.querySelectorAll('.row').forEach(row => {
+    const id = row.dataset.id;
+    row.querySelector('.row-head').addEventListener('click', () => row.classList.toggle('open'));
+
+    row.querySelector('.js-stage').addEventListener('change', async (e) => {
+      await update('contacts', id, { stage: e.target.value });
+      await loadAll();
+    });
+
+    row.querySelector('.js-save-note').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const notes = row.querySelector('.js-notes').value;
+      const btn = e.target; btn.textContent = 'Saving…'; btn.disabled = true;
+      await update('contacts', id, { notes });
+      btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent='Save Notes'; btn.disabled=false; }, 1200);
+    });
+
+    row.querySelector('.js-add-proj').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const title = row.querySelector('.js-p-title').value.trim();
+      if (!title) { alert('Give the project a title.'); return; }
+      const description = row.querySelector('.js-p-desc').value.trim();
+      const valRaw = row.querySelector('.js-p-value').value;
+      const value = valRaw ? Number(valRaw) : null;
+      const { error } = await sb.from('projects').insert({ contact_id: id, title, description, value });
+      if (error) { alert(error.message); return; }
+      await loadAll();
+      document.querySelector(`.row[data-id="${id}"]`)?.classList.add('open');
+    });
+
+    row.querySelectorAll('.proj').forEach(pr => {
+      const pid = pr.dataset.pid;
+      pr.querySelector('.js-p-status').addEventListener('change', async (e) => {
+        await update('projects', pid, { status: e.target.value });
+        await loadAll();
+        document.querySelector(`.row[data-id="${id}"]`)?.classList.add('open');
+      });
+      pr.querySelector('.js-del-proj').addEventListener('click', async () => {
+        if (!confirm('Delete this project?')) return;
+        await sb.from('projects').delete().eq('id', pid);
+        await loadAll();
+        document.querySelector(`.row[data-id="${id}"]`)?.classList.add('open');
+      });
+    });
+  });
+}
+
+async function update(table, id, patch) {
+  const { error } = await sb.from(table).update(patch).eq('id', id);
+  if (error) alert(error.message);
+}
+
+// ── TABS ────────────────────────────────────────────────────────────────────
+$('tabs').addEventListener('click', (e) => {
+  const t = e.target.closest('.tab'); if (!t) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  activeStage = t.dataset.stage;
+  render();
+});
+
+// ── GO ──────────────────────────────────────────────────────────────────────
+initSession();
+</script>
+</body>
+</html>

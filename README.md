@@ -1,29 +1,72 @@
-# The Tech Box
+# Tech Box Solutions
 
-Marketing / portfolio site for The Tech Box — custom digital tools for small businesses.
+Marketing site + lead-capture CRM for **Tech Box Solutions** — websites, custom
+tools, and AI solutions for small businesses.
 
-Single-page static site: `index.html` (HTML + CSS + vanilla JS, no build step, no framework).
+- `index.html` — the marketing site (HTML + CSS + vanilla JS, no build step).
+- `admin.html` — password-protected CRM for leads, customers, and projects.
+- `netlify/functions/submit-lead.js` — receives the contact form, stores the
+  lead in Supabase, and forwards it to email.
+- `supabase-schema.sql` — one-time database setup for the CRM.
 
 ## Local development
 
-No build tooling required. Either:
+```bash
+npm install        # installs the function's Supabase dependency
+netlify dev        # serves the site + functions locally at http://localhost:8888
+```
 
-- Open `index.html` directly in a browser, or
-- Serve it locally so relative paths/fonts behave exactly like production:
-  ```bash
-  npx serve .
-  ```
+Plain static preview without functions: `npx serve .`
 
-## Contact form
+## Contact form → email + CRM
 
-Submissions go through Formspree (form ID `xojonvjy`, set in the `<script>` block
-at the bottom of `index.html`). No server-side code or secrets involved.
+The form posts to the `submit-lead` Netlify Function, which:
+
+1. Inserts the lead into the Supabase `contacts` table (stage = `lead`), and
+2. Forwards it to email via Formspree (form `xojonvjy`) so you still get an inbox
+   notification.
+
+If the Supabase env vars are absent the function still emails you — a lead is
+never lost.
+
+## CRM (Supabase)
+
+Data lives in two tables (see `supabase-schema.sql`):
+
+- **contacts** — every inquiry; `stage` moves `lead → qualified → customer → lost`.
+- **projects** — work tied to a contact; `status` moves `open → in_progress → complete`.
+
+Row-Level Security is on: the public site has no direct DB access. The function
+writes leads with the `service_role` key (server-side only). `admin.html` reads
+and manages everything after signing in with Supabase Auth.
+
+### One-time setup
+
+1. **Database** — Supabase → SQL Editor → run `supabase-schema.sql`.
+2. **Admin user** — Supabase → Authentication → Users → add your login (email + password).
+3. **Netlify env vars** (Site settings → Environment variables, or `netlify env:set`):
+   - `SUPABASE_URL` = your project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` = the secret service role key (**never commit this**)
+   - `FORMSPREE_ENDPOINT` *(optional)* = override the default Formspree form
+4. **Admin keys** — in `admin.html`, set `SUPABASE_URL` and `SUPABASE_ANON_KEY`
+   (both public/safe) near the top of the script.
+
+## SEO
+
+- Keyword-focused `<title>` / meta description, Open Graph + Twitter cards, canonical URL.
+- JSON-LD structured data: `ProfessionalService` + `FAQPage`.
+- `robots.txt` and `sitemap.xml` (admin page excluded from indexing).
 
 ## Deployment
 
-Live at **techboxsolution.com**, hosted on Netlify, DNS managed through Cloudflare
-(A record `@` → Netlify, CNAME `www` → `techboxsolutions.netlify.app`).
+Live at **techboxsolution.com**, hosted on Netlify (project `techboxsolutions`),
+DNS via Cloudflare.
 
-This repo is connected to Netlify via **continuous deployment**: every push to
-`main` triggers an automatic build and deploy. `netlify.toml` sets the publish
-directory to the repo root — no build command needed since this is a static site.
+Deploy from the CLI:
+
+```bash
+netlify deploy --prod
+```
+
+`netlify.toml` sets the publish directory to the repo root and the functions
+directory to `netlify/functions` — no build command needed for this static site.
