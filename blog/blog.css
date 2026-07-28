@@ -1,7 +1,8 @@
 /* ── Shared styles for Tech Box Solutions blog ── */
 :root{
-  --coal:#1C1A18; --steel:#2A2724; --iron:#3A3632; --rust:#4A4540;
-  --amber:#C8922A; --amber2:#E8A830; --cream:#F2EDE6; --smoke:#B0A89E; --chalk:#D4CCC4;
+  /* Rebranded to the blue logo palette; --amber* now hold brand blue. */
+  --coal:#0C1622; --steel:#15202E; --iron:#24303F; --rust:#3B4A5C;
+  --amber:#2AA5EA; --amber2:#57BEF8; --cream:#EAF2FA; --smoke:#8FA3B8; --chalk:#C3D2E1;
   --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif;
   --max:760px;
 }
@@ -12,7 +13,9 @@ body{background:var(--coal);color:var(--chalk);font-family:var(--fb);font-size:1
 /* nav */
 nav{position:sticky;top:0;z-index:100;background:var(--coal);border-bottom:3px solid var(--amber)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1100px;margin:0 auto;padding:0 28px}
-.nav-logo{display:flex;flex-direction:column;text-decoration:none}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-mark{width:42px;height:42px;border-radius:9px;background:#EAF2FA;padding:3px;flex-shrink:0;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column}
 .nav-logo-name{font-family:var(--fd);font-size:20px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--cream);line-height:1}
 .nav-logo-tag{font-family:var(--fd);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);line-height:1;margin-top:3px}
 .nav-cta{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--coal);background:var(--amber);padding:9px 22px;text-decoration:none;transition:background .15s}

@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://techboxsolution.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Tech Box Solutions">
-<meta name="theme-color" content="#1C1A18">
+<meta name="theme-color" content="#0C1622">
 
 <!-- ── LOCAL / GEO ── -->
 <meta name="geo.region" content="US-MD">
@@ -34,7 +34,9 @@
 <meta name="twitter:description" content="We build websites, custom tools, and AI solutions that help small businesses modernize, cut busywork, and grow.">
 <meta name="twitter:image" content="https://techboxsolution.com/og-image.png">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="256x256" href="/assets/favicon-256.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/favicon-256.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -132,17 +134,19 @@
 </script>
 
 <style>
-/* ── TOKENS ── */
+/* ── TOKENS ──
+   Rebranded to the blue logo palette. Token names are kept for stability
+   (--amber / --amber2 now hold the brand BLUE, not amber). */
 :root {
-  --coal:    #1C1A18;
-  --steel:   #2A2724;
-  --iron:    #3A3632;
-  --rust:    #4A4540;
-  --amber:   #C8922A;
-  --amber2:  #E8A830;
-  --cream:   #F2EDE6;
-  --smoke:   #B0A89E;
-  --chalk:   #D4CCC4;
+  --coal:    #0C1622;
+  --steel:   #15202E;
+  --iron:    #24303F;
+  --rust:    #3B4A5C;
+  --amber:   #2AA5EA;
+  --amber2:  #57BEF8;
+  --cream:   #EAF2FA;
+  --smoke:   #8FA3B8;
+  --chalk:   #C3D2E1;
 
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body:    'Barlow', sans-serif;
@@ -217,10 +221,20 @@ nav {
 }
 .nav-logo {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
 }
+.nav-logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  background: #EAF2FA;
+  padding: 3px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.nav-logo-text { display: flex; flex-direction: column; }
 .nav-logo-name {
   font-family: var(--font-display);
   font-size: 20px;
@@ -302,8 +316,8 @@ nav {
     -55deg,
     transparent,
     transparent 18px,
-    rgba(200,146,42,.04) 18px,
-    rgba(200,146,42,.04) 20px
+    rgba(42,165,234,.05) 18px,
+    rgba(42,165,234,.05) 20px
   );
   pointer-events: none;
 }
@@ -958,8 +972,11 @@ footer {
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <div class="nav-logo-name">Tech Box Solutions</div>
-      <div class="nav-logo-tag">Websites · Custom Tools · AI</div>
+      <img class="nav-logo-mark" src="/assets/logo-mark.png" alt="Tech Box Solutions logo" width="42" height="42">
+      <span class="nav-logo-text">
+        <span class="nav-logo-name">Tech Box Solutions</span>
+        <span class="nav-logo-tag">Websites · Custom Tools · AI</span>
+      </span>
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
