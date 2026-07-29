@@ -57,6 +57,12 @@ create table if not exists public.prospects (
   status_note       text,
   last_contacted_at timestamptz,
 
+  -- Is there anyone left to call? Score says how good a prospect is, not
+  -- whether it still exists. See supabase-prospects-002-trading-status.sql.
+  --   open | review (sources conflict, confirm by phone) | closed
+  trading_status    text not null default 'open'
+                    check (trading_status in ('open','review','closed')),
+
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now(),
 
@@ -116,7 +122,9 @@ create trigger prospects_set_updated_at
   for each row execute function public.set_updated_at();
 
 -- ── TRIAGE VIEW ─────────────────────────────────────────────────────────────
-create or replace view public.prospect_triage as
+drop view if exists public.prospect_triage;
+
+create view public.prospect_triage as
 select
   id,
   business_name,
@@ -125,14 +133,20 @@ select
   phone,
   total_score,
   status,
+  trading_status,
   case
+    when trading_status = 'closed' then 'Closed'
+    when trading_status = 'review' then 'Confirm still trading'
     when total_score >= 80 then 'Call this week'
     when total_score >= 65 then 'Warm'
     when total_score >= 50 then 'Nurture'
     else 'Park'
   end as tier
 from public.prospects
-order by total_score desc, business_name;
+order by
+  case trading_status when 'open' then 0 when 'review' then 1 else 2 end,
+  total_score desc,
+  business_name;
 
 -- ── ROW LEVEL SECURITY ──────────────────────────────────────────────────────
 -- This table sits behind a public static site. RLS is the only thing standing

@@ -102,7 +102,7 @@ textarea{resize:vertical;min-height:70px}
 .setup-warn code{color:var(--amber);font-family:monospace}
 
 /* ── PROSPECTS ── */
-.p-controls{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.p-controls{display:grid;grid-template-columns:2fr repeat(5,1fr);gap:12px;margin-bottom:16px}
 .p-controls .field{margin-bottom:0}
 .p-count{font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:10px}
 .prow-head{display:grid;grid-template-columns:56px 1.7fr 170px auto;gap:16px;align-items:center;padding:16px 20px;cursor:pointer}
@@ -115,6 +115,7 @@ textarea{resize:vertical;min-height:70px}
 .bar .g{background:var(--amber)} .bar .t{background:var(--violet)}
 .bar .p{background:var(--red)}   .bar .r{background:var(--blue)} .bar .d{background:var(--green)}
 .tier{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);margin-top:6px}
+.tier.flagged{color:var(--gold)}
 .badge.identified{background:rgba(143,163,184,.14);color:var(--smoke)}
 .badge.contacted{background:rgba(42,165,234,.15);color:var(--blue)}
 .badge.confirmed{background:rgba(111,207,151,.15);color:var(--green)}
@@ -123,6 +124,17 @@ textarea{resize:vertical;min-height:70px}
 .factors b{color:var(--cream);font-weight:600}
 .dot{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:middle}
 .dval a{text-decoration:none}
+.research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--iron)}
+.research-grid .field{margin-bottom:0}
+.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+.score-grid .field{margin-bottom:0}
+.chk{display:flex;align-items:center;gap:8px;height:100%;padding-bottom:2px}
+/* the global `appearance:none` on inputs hides the native tick — restore it */
+.chk input{appearance:auto;-webkit-appearance:auto;width:auto;margin:0;accent-color:var(--amber)}
+.chk span{font-size:.85rem;color:var(--chalk)}
+.sect{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-top:18px}
+.hint{font-size:.78rem;color:var(--smoke);margin-top:10px}
+.hint code{color:var(--amber);font-family:monospace;background:var(--coal);padding:2px 6px}
 
 @media(max-width:800px){
   .stats{grid-template-columns:1fr 1fr}
@@ -220,6 +232,15 @@ textarea{resize:vertical;min-height:70px}
           </select>
         </div>
         <div class="field">
+          <label for="p-trading">Trading</label>
+          <select id="p-trading">
+            <option value="">Any</option>
+            <option value="open">Open only</option>
+            <option value="review">Confirm trading</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div class="field">
           <label for="p-sort">Sort</label>
           <select id="p-sort">
             <option value="score">Score</option>
@@ -264,6 +285,9 @@ const PSTATUS = ['open','in_progress','complete','on_hold','cancelled'];
 
 // Prospect pipeline + the five scoring factors (see supabase-prospects-schema.sql).
 const PROSPECT_STATUS = ['identified','contacted','confirmed','denied'];
+const PRESENCE = ['none','social_only','abandoned_site','aggregator_only','has_site'];
+const TRADING  = ['open','review','closed'];
+const TRADING_LABEL = { open:'Open', review:'Confirm trading', closed:'Closed' };
 const FACTORS = [
   ['gap_score',    'Gap',    30, 'g', 'var(--amber)'],
   ['ticket_score', 'Ticket', 25, 't', 'var(--violet)'],
@@ -272,6 +296,10 @@ const FACTORS = [
   ['demand_score', 'Demand', 10, 'd', 'var(--green)'],
 ];
 const tierOf = (s) => s >= 80 ? 'Call this week' : s >= 65 ? 'Warm' : s >= 50 ? 'Nurture' : 'Park';
+// A row that may not exist any more never reads as "call this week", however it scores.
+const tierOfRow = (p) => p.trading_status === 'closed' ? 'Closed'
+                       : p.trading_status === 'review' ? 'Confirm still trading'
+                       : tierOf(p.total_score);
 const esc = (s) => (s ?? '').toString().replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmtDate = (s) => new Date(s).toLocaleDateString('en-US',
@@ -368,11 +396,12 @@ function renderStats() {
   const cards = activeView === 'prospects'
     ? (() => {
         const byStatus = (s) => prospects.filter(x => x.status === s).length;
+        const open = prospects.filter(x => x.trading_status === 'open');
         return [
-          [prospects.filter(x => x.total_score >= 80).length, 'Call This Week', true],
-          [prospects.filter(x => x.total_score >= 65 && x.total_score < 80).length, 'Warm', false],
+          [open.filter(x => x.total_score >= 80).length, 'Call This Week', true],
+          [open.filter(x => x.total_score >= 65 && x.total_score < 80).length, 'Warm', false],
           [byStatus('contacted'), 'Contacted', false],
-          [byStatus('confirmed'), 'Confirmed', false],
+          [prospects.filter(x => x.trading_status === 'review').length, 'Confirm Trading', false],
         ];
       })()
     : (() => {
@@ -478,15 +507,17 @@ function renderProspects() {
     $('prospects-warn').innerHTML = '';
   }
 
-  const q    = $('p-q').value.trim().toLowerCase();
-  const st   = $('p-status').value;
-  const cat  = $('p-cat').value;
-  const tier = Number($('p-tier').value) || 0;
-  const sort = $('p-sort').value;
+  const q     = $('p-q').value.trim().toLowerCase();
+  const st    = $('p-status').value;
+  const cat   = $('p-cat').value;
+  const tier  = Number($('p-tier').value) || 0;
+  const trad  = $('p-trading').value;
+  const sort  = $('p-sort').value;
 
   const rows = prospects.filter(p => {
     if (st && p.status !== st) return false;
     if (cat && p.category !== cat) return false;
+    if (trad && p.trading_status !== trad) return false;
     if (tier && p.total_score < tier) return false;
     if (q) {
       const hay = [p.business_name, p.owner_name, p.address, p.phone, p.category, p.findings, p.pitch]
@@ -496,10 +527,13 @@ function renderProspects() {
     return true;
   });
 
+  // Flagged rows sink below every open prospect regardless of score.
+  const trade = (p) => p.trading_status === 'open' ? 0 : p.trading_status === 'review' ? 1 : 2;
   rows.sort((a, b) =>
     sort === 'name' ? a.business_name.localeCompare(b.business_name) :
     sort === 'cat'  ? (a.category || '').localeCompare(b.category || '') || b.total_score - a.total_score :
-                      b.total_score - a.total_score || a.business_name.localeCompare(b.business_name));
+                      trade(a) - trade(b) || b.total_score - a.total_score
+                      || a.business_name.localeCompare(b.business_name));
 
   $('p-count').textContent = `${rows.length} of ${prospects.length} shown`;
   $('p-empty').style.display = rows.length ? 'none' : 'block';
@@ -523,14 +557,15 @@ function renderProspectRow(p) {
   return `
   <div class="row" data-pid="${p.id}">
     <div class="prow-head">
-      <div class="pscore${p.total_score >= 80 ? ' hot' : ''}">${p.total_score}</div>
+      <div class="pscore${p.total_score >= 80 && p.trading_status === 'open' ? ' hot' : ''}">${p.total_score}</div>
       <div>
-        <div class="rh-name">${esc(p.business_name)}${p.verified ? '<span class="tick" title="Website absence confirmed by hand">✓ Verified</span>' : ''}</div>
+        <div class="rh-name">${esc(p.business_name)}${p.verified ? '<span class="tick" title="Checked by hand">✓ Verified</span>' : ''}${
+          p.website ? `<span class="tick" style="color:var(--gold)" title="${esc(p.website)}">● Has site</span>` : ''}</div>
         <div class="rh-sub">${meta}</div>
       </div>
       <div class="barwrap">
         <div class="bar">${bar}</div>
-        <div class="tier">${tierOf(p.total_score)}</div>
+        <div class="tier${p.trading_status !== 'open' ? ' flagged' : ''}">${esc(tierOfRow(p))}</div>
       </div>
       <span class="badge ${p.status}">${p.status}</span>
     </div>
@@ -539,22 +574,64 @@ function renderProspectRow(p) {
       <div class="detail-grid">
         <div class="detail-block">
           <div class="dlabel">What we found</div>
-          <div class="dval">${esc(p.findings || '—')}</div>
+          <textarea class="js-p-findings" rows="5">${esc(p.findings || '')}</textarea>
         </div>
         <div class="detail-block">
           <div class="dlabel">Recommended pitch</div>
-          <div class="dval">${esc(p.pitch || '—')}</div>
+          <textarea class="js-p-pitch" rows="5">${esc(p.pitch || '')}</textarea>
         </div>
-        <div class="detail-block">
-          <div class="dlabel">Contact</div>
-          <div class="dval">${p.phone ? `<a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : 'No phone published'}${
-            p.owner_name ? ` · ask for ${esc(p.owner_name)}` : ''}</div>
+      </div>
+
+      <div class="research-grid">
+        <div class="field">
+          <label>Website (blank = none)</label>
+          <input class="js-p-website" value="${esc(p.website || '')}" placeholder="https://…">
         </div>
-        <div class="detail-block">
-          <div class="dlabel">Reputation &amp; presence</div>
-          <div class="dval">${stars} · ${esc(p.presence_type || 'unknown')}${
-            p.last_contacted_at ? ` · last contacted ${fmtDate(p.last_contacted_at)}` : ''}</div>
+        <div class="field">
+          <label>Presence</label>
+          <select class="js-p-presence">
+            ${PRESENCE.map(v => `<option value="${v}" ${v === (p.presence_type || 'none') ? 'selected' : ''}>${v.replace(/_/g,' ')}</option>`).join('')}
+          </select>
         </div>
+        <div class="field">
+          <label>Owner / contact</label>
+          <input class="js-p-owner" value="${esc(p.owner_name || '')}" placeholder="Who to ask for">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input class="js-p-phone" value="${esc(p.phone || '')}" placeholder="301-555-0100">
+        </div>
+        <div class="field">
+          <label>Reviews</label>
+          <input class="js-p-reviews" type="number" min="0" value="${p.review_count ?? ''}" placeholder="—">
+        </div>
+        <div class="field">
+          <label>Rating</label>
+          <input class="js-p-rating" type="number" min="0" max="5" step="0.1" value="${p.rating ?? ''}" placeholder="—">
+        </div>
+        <div class="field">
+          <label>Verified</label>
+          <label class="chk"><input type="checkbox" class="js-p-verified" ${p.verified ? 'checked' : ''}><span>Checked by hand</span></label>
+        </div>
+        <div class="field">
+          <label>Still trading?</label>
+          <select class="js-p-trading">
+            ${TRADING.map(v => `<option value="${v}" ${v === (p.trading_status || 'open') ? 'selected' : ''}>${TRADING_LABEL[v]}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label>Last contacted</label>
+          <div class="dval" style="padding-top:9px">${p.last_contacted_at ? fmtDate(p.last_contacted_at) : '—'}</div>
+        </div>
+      </div>
+
+      <div class="sect">Score — ${stars}</div>
+      <div class="score-grid">
+        ${FACTORS.map(([key, label, max]) => `
+        <div class="field">
+          <label>${label} / ${max}</label>
+          <input class="js-p-score" data-key="${key}" type="number" min="0" max="${max}" value="${p[key]}">
+        </div>`).join('')}
       </div>
 
       <div class="factors">${facts}</div>
@@ -574,6 +651,8 @@ function renderProspectRow(p) {
         <a class="btn btn-sm btn-ghost" href="${esc(lookup)}" target="_blank" rel="noopener"
            style="text-decoration:none;text-align:center">Look Up</a>
       </div>
+
+      <div class="hint">Deep-dive this one automatically: run <code>/prospect-research ${esc(p.business_name)}</code> in Claude Code.</div>
     </div>
   </div>`;
 }
@@ -585,17 +664,48 @@ function wireProspectRows() {
 
     row.querySelector('.js-p-save').addEventListener('click', async (e) => {
       const btn = e.target;
+      const val = (sel) => row.querySelector(sel).value.trim();
+      const orNull = (s) => s === '' ? null : s;
+      const numOrNull = (s) => s === '' ? null : Number(s);
+
       const status = row.querySelector('.js-p-stage').value;
-      const patch = { status, status_note: row.querySelector('.js-p-note').value };
-      if (status === 'contacted') patch.last_contacted_at = new Date().toISOString();
+      const patch = {
+        status,
+        status_note:   row.querySelector('.js-p-note').value,
+        findings:      orNull(val('.js-p-findings')),
+        pitch:         orNull(val('.js-p-pitch')),
+        website:       orNull(val('.js-p-website')),
+        presence_type: val('.js-p-presence'),
+        owner_name:    orNull(val('.js-p-owner')),
+        phone:         orNull(val('.js-p-phone')),
+        review_count:  numOrNull(val('.js-p-reviews')),
+        rating:        numOrNull(val('.js-p-rating')),
+        verified:      row.querySelector('.js-p-verified').checked,
+        trading_status: val('.js-p-trading'),
+      };
+      // total_score is generated by the database — never send it.
+      for (const input of row.querySelectorAll('.js-p-score')) {
+        patch[input.dataset.key] = Number(input.value) || 0;
+      }
 
       btn.textContent = 'Saving…'; btn.disabled = true;
-      const { error } = await sb.from('prospects').update(patch).eq('id', id);
-      if (error) { alert(error.message); btn.textContent = 'Save'; btn.disabled = false; return; }
+      if (status === 'contacted' && prospects.find(p => p.id === id).status !== 'contacted') {
+        patch.last_contacted_at = new Date().toISOString();
+      }
 
-      Object.assign(prospects.find(p => p.id === id), patch);
+      // select() returns the row with total_score recomputed by Postgres.
+      const { data, error } = await sb.from('prospects').update(patch).eq('id', id).select().single();
+      if (error) { alert('Could not save: ' + error.message); btn.textContent = 'Save'; btn.disabled = false; return; }
+
+      Object.assign(prospects.find(p => p.id === id), data);
       btn.textContent = 'Saved ✓';
       renderStats();
+      const score = row.querySelector('.pscore');
+      score.textContent = data.total_score;
+      score.className = 'pscore' + (data.total_score >= 80 && data.trading_status === 'open' ? ' hot' : '');
+      const tier = row.querySelector('.tier');
+      tier.textContent = tierOfRow(data);
+      tier.className = 'tier' + (data.trading_status !== 'open' ? ' flagged' : '');
       row.querySelector('.badge').className = 'badge ' + status;
       row.querySelector('.badge').textContent = status;
       setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 1200);
@@ -603,7 +713,7 @@ function wireProspectRows() {
   });
 }
 
-['p-q','p-status','p-cat','p-tier','p-sort'].forEach(id => {
+['p-q','p-status','p-cat','p-tier','p-trading','p-sort'].forEach(id => {
   $(id).addEventListener('input', renderProspects);
   $(id).addEventListener('change', renderProspects);
 });
