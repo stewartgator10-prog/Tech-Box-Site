@@ -5,3 +5,24 @@ node_modules/
 *.log
 .env
 .env.*
+
+# Higgsfield master renders. 4-6 MB PNGs each; only the optimized .webp
+# files are referenced by the site. Regenerate with scripts/gen-cases.ps1
+# and re-run scripts/optimize-media.mjs.
+assets/media/*.png
+
+# ── NOT SHIPPABLE ────────────────────────────────────────────────────────
+# netlify.toml sets `publish = "."`, so every committed file is served
+# publicly from the site root. Anything below is internal, and committing
+# it would publish it at techboxsolution.com/<path>. Keep it local until
+# the publish root is narrowed to a dedicated directory.
+docs/
+supabase/
+scripts/
+
+# Agent tooling. Reproducible from skills-lock.json via `npx skills add`.
+.agents/
+.claude/skills/
+
+# Word leaves these lock files behind when a .md is open.
+~$*

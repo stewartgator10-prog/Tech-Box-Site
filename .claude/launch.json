@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "5959", "."],
       "port": 5959
+    },
+    {
+      "name": "netlify-dev",
+      "runtimeExecutable": "netlify",
+      "runtimeArgs": ["dev", "--port", "8901"],
+      "port": 8901
     }
   ]
 }
