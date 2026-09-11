@@ -58,6 +58,7 @@
   "name": "Tech Box Solutions",
   "description": "Tech Box Solutions deploys the right digital solution for each business — websites, custom software tools, and AI built around how the business actually works.",
   "url": "https://techboxsolution.com/",
+  "telephone": "+1-240-285-9512",
   "image": "https://techboxsolution.com/og-image.png",
   "priceRange": "$$",
   "address": {
@@ -339,8 +340,36 @@ nav.stuck { border-bottom-color: var(--hair); }
 }
 .nav-cta:hover { background: var(--blue-ink); transform: translateY(-1px); }
 
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Tap-to-call. Phones only — on a desktop a tel: link opens a dialer
+   app most people don't have, and the number is in the contact section. */
+.nav-call {
+  display: none;
+  place-items: center;
+  width: 40px; height: 40px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+  background: var(--paper);
+  transition: background .25s ease, color .25s ease, border-color .25s ease;
+}
+.nav-call:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
 @media (max-width: 860px) {
   .nav-links, .nav-logo-tag { display: none; }
+  .nav-call { display: grid; }
+}
+/* The logo, call button and CTA only just share a 375px phone. Below that
+   the CTA ran off the right edge, so tighten it first, then drop the
+   wordmark (the toolbox mark stays) on the narrowest screens. */
+@media (max-width: 400px) {
+  .nav-inner { gap: 12px; }
+  .nav-cta { padding: 10px 14px; letter-spacing: .06em; font-size: 13px; }
+}
+@media (max-width: 350px) {
+  .nav-logo-name { display: none; }
 }
 
 /* ── HERO ───────────────────────────────────────────────────── */
@@ -925,6 +954,38 @@ nav.stuck { border-bottom-color: var(--hair); }
 }
 @media (max-width: 940px) { .contact-grid { grid-template-columns: 1fr; } }
 
+/* Direct line — sits between the lede and the promises so a visitor who
+   would rather talk than type sees it before they reach the form. */
+.call-line {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 28px;
+  text-decoration: none;
+  color: var(--paper);
+}
+.call-kicker {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(244,242,238,.6);
+}
+.call-number {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 2px;
+  align-self: flex-start;
+  transition: color .22s ease;
+}
+.call-line:hover .call-number { color: var(--blue); }
+
 .promise { margin-top: 34px; display: flex; flex-direction: column; gap: 22px; }
 .promise-row { display: flex; gap: 14px; align-items: flex-start; }
 .promise-row .pdot {
@@ -1019,6 +1080,21 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
 }
 .footer-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--paper); }
 .footer-tag { font-size: 13.5px; margin-top: 4px; }
+.footer-phone {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--blue);
+  padding-bottom: 1px;
+  transition: color .2s ease;
+}
+.footer-phone:hover { color: var(--blue); }
 .footer-links { display: flex; gap: 26px; list-style: none; flex-wrap: wrap; }
 .footer-links a {
   font-family: var(--font-display);
@@ -1088,7 +1164,14 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
       <li><a href="#approach">Approach</a></li>
       <li><a href="/blog/">Blog</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">Start a Project</a>
+    <div class="nav-actions">
+      <a href="tel:+12402859512" class="nav-call" aria-label="Call Tech Box Solutions at (240) 285-9512">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/>
+        </svg>
+      </a>
+      <a href="#contact" class="nav-cta">Start a Project</a>
+    </div>
   </div>
 </nav>
 
@@ -1548,6 +1631,11 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
           what's possible — and what it would roughly cost. No obligation.
         </p>
 
+        <a class="call-line" href="tel:+12402859512">
+          <span class="call-kicker">Prefer to talk?</span>
+          <span class="call-number">(240) 285-9512</span>
+        </a>
+
         <div class="promise">
           <div class="promise-row">
             <span class="pdot"></span>
@@ -1641,6 +1729,7 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
         <div class="footer-name">Tech Box Solutions</div>
         <div class="footer-tag">Websites · Custom Tools · AI for Small Business</div>
         <div class="footer-tag">Proudly serving Frederick County, Maryland.</div>
+        <a class="footer-phone" href="tel:+12402859512">(240) 285-9512</a>
       </div>
       <ul class="footer-links">
         <li><a href="#work">Work</a></li>
