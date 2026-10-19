@@ -8,9 +8,15 @@
   </url>
   <url>
     <loc>https://techboxsolution.com/blog/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://techboxsolution.com/blog/why-a-blog-is-the-most-underused-tool-on-your-website.html</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://techboxsolution.com/blog/online-reviews-reputation-frederick-md-small-business.html</loc>
