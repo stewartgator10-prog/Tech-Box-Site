@@ -89,6 +89,20 @@
     "AI solutions",
     "Business automation"
   ],
+  "makesOffer": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "SoftwareApplication",
+      "name": "Woodchuck",
+      "url": "https://woodchuck.techboxsolution.com/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web browser",
+      "description": "Chip drop dispatch software for tree care companies. Ranks drop sites by the true cost of the detour, verifies the drop and dispatches the crew."
+    },
+    "price": "99",
+    "priceCurrency": "USD",
+    "url": "https://woodchuck.techboxsolution.com/"
+  },
   "slogan": "Every business deserves a solution that feels like them."
 }
 </script>
@@ -168,6 +182,12 @@
   --hair:     #D9D3CA;
   --blue:     #2AA5EA;
   --blue-ink: #0E6DA6;
+
+  /* Woodchuck's own brand green, lifted from the product site. Dark
+     enough (~7:1 on paper) to carry text as well as graphics, so unlike
+     --blue it needs no separate text variant. */
+  --wood:     #2F5A2E;
+  --wood-dim: #EAEFE6;
 
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body:    'Barlow', sans-serif;
@@ -606,6 +626,102 @@ nav.stuck { border-bottom-color: var(--hair); }
 }
 .jump-go .arw { transition: transform .3s var(--ease); }
 
+/* ── WOODCHUCK ──────────────────────────────────────────────────
+   Our own product, so it gets a band of its own rather than a slot in
+   the portfolio rail — a thing you can buy is a different offer from
+   a thing we build for you. Keeps the site's paper, type and spacing;
+   swaps the accent to Woodchuck's green so it reads as a Tech Box
+   product rather than a pasted-in advert. */
+#woodchuck { background: var(--paper-2); border-block: 1px solid var(--hair); }
+
+.wood-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: clamp(30px, 5vw, 76px);
+  align-items: center;
+}
+@media (max-width: 920px) { .wood-grid { grid-template-columns: 1fr; } }
+
+.wood-eyebrow { color: var(--wood); }
+.wood-eyebrow::before { background: var(--wood); }
+
+.wood-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  line-height: .95;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.wood-title .hl { color: var(--wood); }
+
+.wood-body { margin-top: 18px; color: var(--ink-2); max-width: 54ch; }
+
+.wood-points { list-style: none; margin-top: 22px; display: grid; gap: 10px; }
+.wood-points li { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start; font-size: 15.5px; }
+.wood-points .tick {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--wood); margin-top: 9px;
+}
+
+.wood-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hair);
+}
+.wood-price b {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--wood);
+}
+.wood-price span { font-size: 15px; color: var(--ink-2); }
+
+.wood-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.btn-wood { background: var(--wood); color: var(--paper); }
+.btn-wood:hover { background: var(--ink); transform: translateY(-2px); }
+.btn-wood-ghost { border: 1px solid var(--wood); color: var(--wood); }
+.btn-wood-ghost:hover { background: var(--wood); color: var(--paper); transform: translateY(-2px); }
+
+.wood-card {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 6px;
+  padding: clamp(26px, 3.6vw, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+}
+.wood-logo { width: clamp(160px, 20vw, 226px); height: auto; display: block; }
+.wood-tag {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.wood-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.wood-chip {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 7px 13px;
+  border-radius: 100px;
+  background: var(--wood-dim);
+  color: var(--wood);
+  white-space: nowrap;
+}
+
 /* ── WORK ───────────────────────────────────────────────────── */
 .work-head {
   display: flex;
@@ -760,6 +876,16 @@ nav.stuck { border-bottom-color: var(--hair); }
   font-size: 14.5px;
   color: var(--ink);
 }
+/* Only used where a case graduated into a product. */
+.case-link {
+  color: var(--wood);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--wood);
+  padding-bottom: 1px;
+  transition: background .25s ease;
+}
+.case-link:hover { background: var(--wood-dim); }
 
 /* ── RANGE / MARQUEE ────────────────────────────────────────── */
 #range { background: var(--paper-2); border-block: 1px solid var(--hair); }
@@ -1160,6 +1286,7 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
     </a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
+      <li><a href="#woodchuck">Woodchuck</a></li>
       <li><a href="#range">Range</a></li>
       <li><a href="#approach">Approach</a></li>
       <li><a href="/blog/">Blog</a></li>
@@ -1251,6 +1378,56 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
   </div>
 </section>
 
+<!-- ── WOODCHUCK ── -->
+<section id="woodchuck">
+  <div class="wrap">
+    <div class="wood-grid">
+      <div>
+        <div class="eyebrow wood-eyebrow">Our own product</div>
+        <h2 class="wood-title">Woodchuck.<br><span class="hl">Chip drop made easy.</span></h2>
+        <p class="wood-body">
+          Tree crews lose daylight deciding where to dump a full truck. Woodchuck ranks
+          your drop sites by what the detour actually costs — fuel, drive time, drop fees
+          and crew labor — confirms the site is ready, and sends the crew directions in
+          the group chat they already use.
+        </p>
+
+        <ul class="wood-points">
+          <li><span class="tick"></span>Traffic-aware routing, weighted for a loaded chip truck</li>
+          <li><span class="tick"></span>One tap to call or text a site owner before you roll</li>
+          <li><span class="tick"></span>Dispatch into Telegram, GroupMe, WhatsApp, Slack, Teams or Discord</li>
+          <li><span class="tick"></span>Your own signup link for homeowners who want free chips</li>
+          <li><span class="tick"></span>Wood-type matching, including black walnut</li>
+        </ul>
+
+        <div class="wood-price">
+          <b>$99</b>
+          <span>per crew, per month &middot; $69 after your third crew &middot; first month free</span>
+        </div>
+
+        <div class="wood-actions">
+          <a class="btn btn-wood" href="https://woodchuck.techboxsolution.com/login?mode=signup" target="_blank" rel="noopener">Start your free month</a>
+          <a class="btn btn-wood-ghost" href="https://woodchuck.techboxsolution.com" target="_blank" rel="noopener">See how it works</a>
+        </div>
+      </div>
+
+      <div class="wood-card rise">
+        <img class="wood-logo" src="/assets/woodchuck-logo.webp"
+             alt="Woodchuck — chip drop made easy" width="462" height="405"
+             loading="lazy" decoding="async">
+        <div class="wood-tag">Built by Tech Box Solutions</div>
+        <div class="wood-chips">
+          <span class="wood-chip">True-cost ranking</span>
+          <span class="wood-chip">Crew-chat dispatch</span>
+          <span class="wood-chip">Homeowner signups</span>
+          <span class="wood-chip">CSV import</span>
+          <span class="wood-chip">Live in ~15 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── WORK ── -->
 <section id="work">
   <div class="wrap">
@@ -1304,13 +1481,13 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
             <span class="case-live" hidden>Live</span>
           </div>
           <h3 class="case-name">Chip Drop Dispatch</h3>
-          <div class="case-kind">Custom tool</div>
+          <div class="case-kind">Custom tool · became a product</div>
           <p class="case-desc">
-            Crews used to guess where to dump chips mid-job, burning fuel and daylight
-            on the wrong detour. This ranks every nearby drop site by real cost and
-            distance, then texts the site owner in one tap.
+            Built for one tree crew who were guessing where to dump mid-job, burning fuel
+            and daylight on the wrong detour. It ranked every nearby site by what the
+            detour really cost and texted the owner in one tap.
           </p>
-          <p class="case-outcome">The whole decision now takes under 30 seconds — every job, every day.</p>
+          <p class="case-outcome">It worked well enough that we turned it into <a class="case-link" href="#woodchuck">Woodchuck</a> — now any tree company can run it.</p>
         </div>
       </article>
 
@@ -1733,6 +1910,7 @@ footer { background: var(--ink); color: rgba(244,242,238,.6); padding: 0 0 44px;
       </div>
       <ul class="footer-links">
         <li><a href="#work">Work</a></li>
+        <li><a href="#woodchuck">Woodchuck</a></li>
         <li><a href="#range">Range</a></li>
         <li><a href="#approach">Approach</a></li>
         <li><a href="/blog/">Blog</a></li>
